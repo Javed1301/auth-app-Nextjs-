@@ -5,20 +5,14 @@ import {useRouter} from "next/navigation";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-
-
-
-
 export default function LoginPage() {
     const router = useRouter();
     const [user, setUser] = React.useState({
         email: "",
         password: "",
-       
     })
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
-
 
     const onLogin = async () => {
         try {
@@ -31,7 +25,7 @@ export default function LoginPage() {
             console.log("Login failed don't know", error.message);
             toast.error(error.message);
         } finally{
-        setLoading(false);
+            setLoading(false);
         }
     }
 
@@ -44,33 +38,48 @@ export default function LoginPage() {
     }, [user]);
 
     return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <h1>{loading ? "Processing" : "Login"}</h1>
-        <hr />
-        
-        <label htmlFor="email">email</label>
-        <input 
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black bg-amber-50"
-            id="email"
-            type="text"
-            value={user.email}
-            onChange={(e) => setUser({...user, email: e.target.value})}
-            placeholder="email"
-            />
-        <label htmlFor="password">password</label>
-        <input 
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black bg-amber-50"
-            id="password"
-            type="password"
-            value={user.password}
-            onChange={(e) => setUser({...user, password: e.target.value})}
-            placeholder="password"
-            />
-            <button
-            onClick={onLogin}
-            className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">Login here</button>
-            <Link href="/signup">Visit Signup page</Link>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
+            <div className="bg-gray-900 shadow-2xl rounded-2xl p-8 w-full max-w-md flex flex-col items-center border border-gray-700">
+                <h1 className="text-2xl font-bold mb-6 text-white">{loading ? "Processing..." : "Login"}</h1>
+                <hr className="w-1/2 mb-6 border-gray-700" />
+
+                <label htmlFor="email" className="self-start text-gray-300 mb-1">Email</label>
+                <input 
+                    className="w-full p-2 mb-4 rounded-lg bg-gray-800 border border-gray-700 text-gray-100 focus:outline-none focus:border-blue-500"
+                    id="email"
+                    type="text"
+                    value={user.email}
+                    onChange={(e) => setUser({...user, email: e.target.value})}
+                    placeholder="Enter your email"
+                    autoComplete="username"
+                />
+
+                <label htmlFor="password" className="self-start text-gray-300 mb-1">Password</label>
+                <input 
+                    className="w-full p-2 mb-6 rounded-lg bg-gray-800 border border-gray-700 text-gray-100 focus:outline-none focus:border-blue-500"
+                    id="password"
+                    type="password"
+                    value={user.password}
+                    onChange={(e) => setUser({...user, password: e.target.value})}
+                    placeholder="Enter your password"
+                    autoComplete="current-password"
+                />
+
+                <button
+                    onClick={onLogin}
+                    disabled={buttonDisabled || loading}
+                    className={`w-full py-2 rounded-lg font-semibold transition-all
+                        ${buttonDisabled || loading
+                            ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                            : "bg-blue-600 text-white hover:bg-blue-700 hover:brightness-110"}
+                        mb-4`}
+                >
+                    Login
+                </button>
+                <Link href="/signup" className="text-blue-400 hover:underline hover:text-blue-300">
+                    Visit Signup page
+                </Link>
+            </div>
         </div>
     )
-
 }
