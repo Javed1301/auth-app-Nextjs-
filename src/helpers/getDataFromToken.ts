@@ -8,7 +8,7 @@ export const getDataFromToken = (request: NextRequest) => {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET!) as jwt.JwtPayload;
         return decodedToken.id;
     } catch (error) {
-        // error is unknown, so handle accordingly
+        console.error("Token decoding failed:", error);
         throw new Error("Error extracting data from token");
     }
 }
