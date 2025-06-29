@@ -1,5 +1,5 @@
-export default async function UserProfile({ params }: { params: { id: string } }) {
-    const paramsId = params.id;
+export default async function UserProfile({ params }: { params: Promise<{ id: string }> }) {
+    const { id: paramsId } = await params;
     return (
         <div className="flex justify-center items-center flex-col min-h-screen">
             <h2 className="text-2xl font-bold mb-2">Profile</h2>
