@@ -14,17 +14,19 @@ export async function POST(request:NextRequest){
         if(!user){
             return NextResponse.json({error:"User not found"},{status:404});
         }
-        console.log("Forgot password request for user:", user);
+        // console.log("Forgot password request for user:", user);
         // Send reset password email
-        const mailResponse = await sendEmail({
+        await sendEmail({
             email: user.email,
             emailType: "RESET",
             userId: user._id
         });
         // console.log("Mail response:", mailResponse);
+
         return NextResponse.json({message:"Password reset link sent to your email"},{status:200});
-    } catch (error:any) {
-        console.log("Error in forgot password API:", error.message);
-        return NextResponse.json({error:error.message},{status:500});
+    } catch (error: unknown) {
+        const errMsg = error instanceof Error ? error.message : "Internal server error";
+        // console.log("Error in forgot password API:", errMsg);
+        return NextResponse.json({ error: errMsg }, { status: 500 });
     }
 }

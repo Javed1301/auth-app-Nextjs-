@@ -11,7 +11,8 @@ export async function GET() {
             expires:new Date(0)
         });
         return response;
-    } catch (error:any) {
-        return NextResponse.json({error: error.message},{status:500})
+     } catch (error: unknown) {
+        const errMsg = error instanceof Error ? error.message : "Internal server error";
+        return NextResponse.json({ error: errMsg }, { status: 500 });
     }
 }

@@ -21,8 +21,8 @@ export async function POST(request: NextRequest){
         user.forgotPasswordTokenExpiry = undefined;
         await user.save();
         return NextResponse.json({ message: "Password reset successfully" }, { status: 200 });
-    } catch (error:any) {
-        console.error("Error in reset password API:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    } catch (error: unknown) {
+        const errMsg = error instanceof Error ? error.message : "Internal server error";
+        return NextResponse.json({ error: errMsg }, { status: 500 });
     }
 }

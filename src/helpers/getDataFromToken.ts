@@ -1,13 +1,14 @@
 import { NextRequest } from "next/server";
-import  jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
-export const getDataFromToken = (request:NextRequest) => {
+export const getDataFromToken = (request: NextRequest) => {
     try {
         const token = request.cookies.get("token")?.value || '';
-        
-        const decodedYoken :any = jwt.verify(token,process.env.TOKEN_SECRET!);
-        return decodedYoken.id;
-    } catch (error :any) {
-        throw new Error("Error extracting data from token",error.message);
+        // Use jwt.JwtPayload for decoded token type
+        const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET!) as jwt.JwtPayload;
+        return decodedToken.id;
+    } catch (error) {
+        // error is unknown, so handle accordingly
+        throw new Error("Error extracting data from token");
     }
 }

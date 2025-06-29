@@ -1,7 +1,7 @@
 import {connect} from "@/dbConfig/dbConfig"
 import { NextResponse,NextRequest } from "next/server";
 import User from "@/models/userModel";
-import { sendEmail } from "@/helpers/mailer";
+
 
 connect();
 
@@ -27,8 +27,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({message:"Email verified successfully"},{status:200});
 
-   } catch (error:any) {
-    return NextResponse.json({error:error.message},{status:500});
-    
-   }
+    }catch (error: unknown) {
+        const errMsg = error instanceof Error ? error.message : "Internal server error";
+        return NextResponse.json({ error: errMsg }, { status: 500 });
+    }
 }

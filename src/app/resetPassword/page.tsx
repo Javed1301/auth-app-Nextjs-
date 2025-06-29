@@ -37,9 +37,10 @@ export default function ResetPasswordPage() {
             toast.success("Password reset successfully! You can now login.");
                  
 
-        } catch (error: any) {
-            setError(error?.response?.data?.error || "Error resetting password. Please try again later.");
-            toast.error(error?.response?.data?.error || "Error resetting password. Please try again later.");
+        } catch (error: unknown) {
+        // console.log("logout failed", error.message)
+            const errMsg = error instanceof Error ? error.message : "reset Password failed";
+            toast.error(errMsg);
         } finally {
             setLoading(false);
         }

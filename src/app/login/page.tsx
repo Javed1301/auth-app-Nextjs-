@@ -22,11 +22,11 @@ export default function LoginPage() {
     const onLogin = async () => {
         try {
             setLoading(true);
-            const response = await axios.post("/api/users/login", user);
+            await axios.post("/api/users/login", user);
             toast.success("Login success");
             router.push("/profile");
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch (error: unknown) {
+            toast.error(error instanceof Error ? error.message : "Login failed");
         } finally {
             setLoading(false);
         }
@@ -35,13 +35,12 @@ export default function LoginPage() {
     const onForgotPassword = async () => {
         try {
             setForgotLoading(true);
-            // Call your forgot password API here
-            const response = await axios.post("/api/users/forgotPassword", { email: forgotEmail });
+            await axios.post("/api/users/forgotPassword", { email: forgotEmail });
             toast.success("Password reset link sent to your email");
             setShowForgot(false);
             setForgotEmail("");
-        } catch (error: any) {
-            toast.error(error.message || "Failed to send reset link");
+        } catch (error: unknown) {
+            toast.error(error instanceof Error ? error.message : "Failed to send reset link");
         } finally {
             setForgotLoading(false);
         }
