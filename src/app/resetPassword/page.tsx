@@ -2,6 +2,7 @@
 import axios from "axios"
 import Link from "next/link"
 import React, { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 export default function ResetPasswordPage() {
     const [token, setToken] = useState("")
@@ -21,18 +22,24 @@ export default function ResetPasswordPage() {
         setError("");
         if (!password || !confirmPassword) {
             setError("Please fill all fields.");
+            toast.error("Please fill all fields.");
             return;
         }
         if (password !== confirmPassword) {
             setError("Passwords do not match.");
+            toast.error("Passwords do not match.");
             return;
         }
         setLoading(true);
         try {
             await axios.post("/api/users/resetPassword", { token, password });
             setReset(true);
+            toast.success("Password reset successfully! You can now login.");
+                 
+
         } catch (error: any) {
             setError(error?.response?.data?.error || "Error resetting password. Please try again later.");
+            toast.error(error?.response?.data?.error || "Error resetting password. Please try again later.");
         } finally {
             setLoading(false);
         }
